@@ -3,11 +3,19 @@ let totalCredits = 0;
 
 const courseListDiv = document.querySelector(".course-list");
 const selectedCourseListDiv = document.querySelector(".selected-course-list");
+const filterInput = document.querySelector("#search-input");
 
 const selectedCourses = [];
 
 window.addEventListener("load", async function() {
     fetchCourses();
+});
+
+filterInput.addEventListener("input", async function () {
+    const response = await fetch(courseListEndpoint);
+    const courseList = await response.json();
+    const filteredCourses = courseList.filter(course => course.courseName.toLowerCase().includes(filterInput.value.toLowerCase()));
+    renderCourses(filteredCourses);
 });
 
 async function fetchCourses() {
@@ -28,10 +36,6 @@ function renderCourses(courseList) {
 
     const selectButton = document.getElementById("select-button");
     selectButton.addEventListener("click", () => {
-        let totalCredits = 0;
-        selectedCourses.forEach((course) => {
-            totalCredits += course.credit;
-        });
         const confirmationMessage = "You have chosen " + totalCredits + " credits for this semester. You cannot change once you submit. Do you want to confirm?";
         const confirmationResult = confirm(confirmationMessage);
         if (confirmationResult) {
@@ -72,22 +76,21 @@ function createCourseCard(course) {
     type.classList.add("course-type");
     type.textContent = "Type: " + courseType;
 
-    // let flag = false;
     card.addEventListener("click", () => {
-        if (totalCredits + course.credit <= 18) {
-            if (!selectedCourses.includes(course)) {
+        if (!selectedCourses.includes(course)) {
+            if (totalCredits + course.credit <= 18) {
                 selectedCourses.push(course);
                 card.classList.add("selected-course-card");
                 totalCredits += course.credit;
                 document.getElementById("total-credits").textContent = "Total credits: " + totalCredits;
             } else {
-                selectedCourses.splice(selectedCourses.indexOf(course), 1);
-                card.classList.remove("selected-course-card");
-                totalCredits -= course.credit;
-                document.getElementById("total-credits").textContent = "Total credits: " + totalCredits;
+                alert("You can only choose up to 18 credits in one semester");
             }
         } else {
-            alert("You can only choose up to 18 credits in one semester");
+            selectedCourses.splice(selectedCourses.indexOf(course), 1);
+            card.classList.remove("selected-course-card");
+            totalCredits -= course.credit;
+            document.getElementById("total-credits").textContent = "Total credits: " + totalCredits;
         }
     });
 
@@ -102,6 +105,7 @@ function createCourseCard(course) {
 
 function createSelectedCourseCard(course) {
     const card = document.createElement("div");
+    card.classList.add("course-card");
     card.classList.add("selected-course-card");
 
     const name = document.createElement("p");
@@ -140,3 +144,5 @@ function createSelectedCourseCard(course) {
 
     return card;
 }
+
+

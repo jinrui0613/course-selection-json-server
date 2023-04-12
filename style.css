@@ -22,8 +22,16 @@ body {
     border: 1px solid black;
     padding: 10px;
     margin: 1px;
-    background-color: rgb(221, 239, 221);
+    /* background-color: rgb(221, 239, 221); */
     cursor: pointer;
+}
+
+.course-card:nth-child(odd) {
+    background-color: rgb(221, 239, 221);
+}
+
+.course-card:nth-child(even) {
+    background-color: white;
 }
 
 
@@ -59,14 +67,13 @@ body {
     border: 1px solid black;
 }
 
-.selected-course-card {
+.available-courses .selected-course-card {
     border: 1px solid black;
     padding: 10px;
     margin: 1px;
-    background-color: rgb(221, 239, 221);
+    background-color: deepskyblue;
     cursor: pointer;
 }
-
 
 .selected-course-card .course-name {
     margin: 0;
@@ -79,31 +86,4 @@ body {
     text-align: justify;
     text-justify: inter-word;
 }
-
-
-.button-container {
-    display: flex;
-    justify-content: center;
-    margin-top: 20px;
-}
-
-.button-container button {
-    font-size: 16px;
-    font-weight: bold;
-    background-color: #4CAF50;
-    color: white;
-    border: none;
-    padding: 10px 20px;
-    margin: 5px;
-    cursor: pointer;
-}
-
-.button-container button:disabled {
-    background-color: gray;
-    cursor: default;
-}
-
-.button-container button:hover:not([disabled]) {
-    background-color: #3e8e41;
-} 
 
